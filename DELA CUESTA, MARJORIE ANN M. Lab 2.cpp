@@ -64,7 +64,7 @@ using namespace std;
     Node *temp = new Node;
     temp = head;
 
-    while(temp->songName.compare(after) != 0){
+    while(temp != NULL && temp->songName.compare(after) != 0){
         if(temp == NULL){
             return "No such song exist, please try again later.";
         }
@@ -77,44 +77,96 @@ using namespace std;
 
     return "An new node has been added after" + after + "\n";
  }
+
+ string deleteAtEnd(Node *head){
+   if(head == NULL){
+      return "The linked list is empty \n";
+   }
+   if(head->link == NULL){
+      delete head;
+      return "The head has been deleted \n";
+   }
+   Node *temp = new Node;
+   temp = head;
+
+   while(temp->link->link != NULL){
+      temp = temp->link;
+   }
+   temp->link = NULL;
+   return "A node has been deleted at the end \n";
+ }
+
+ Node *deleteFromBeginning(Node *head){
+   if(head == NULL){
+      cout << "The linked list is empty \n" << endl;
+      return NULL;
+   }
+   if(head->link == NULL){
+      delete head;
+   }
+
+   head = head->link;
+   cout <<"A node has been deleted from the beginning \n" << endl;
+   return head;
+ }
+
+ Node *deleteFromGivenNode(string givenNode, Node *head){
+   if(head == NULL){
+      cout << "The linked list is empty. \n" << endl;
+      return NULL;
+   }
+   if(head->songName.compare(givenNode) == 0){
+      head = deleteFromBeginning(head);
+      cout << "The Node" + givenNode + "has been deleted. \n" << endl;
+      return head;
+   }
+   Node *temp = new Node;
+   Node *next = new Node;
+   temp = head;
+   next = temp->link;
+
+   while(next->songName.compare(givenNode) != 0){
+      if(temp == NULL){
+         cout << "No such node exist. \n" << endl;
+         return head;
+      }
+      next = next->link;
+      temp = temp->link;
+   }
+   temp->link = next->link;
+   cout << "The Node" + givenNode + "has been deleted. \n" << endl;
+   return head;
+ }
+
+
  int main(){
     Node *head = createNode("Sanctuary by Joji");
 
     head = insertAtEnd("Sunday Morning by Maroon 5", head);
-    traverse(head);
-     
     head = insertAtEnd("All to Myself by Future, Metro Boomin & The Weekend", head);
-    traverse (head);
-
     head = insertAtEnd("Mama Knows Best by Jessie J", head);
-    traverse(head);
-
     head = insertAtEnd("I Love You by Celine Dion", head);
     traverse(head);
 
     head = insertAtBeginning("Jump by Tyla", head);
-    traverse(head);
-
     head = insertAtBeginning("Adore You by Miley Cyrus", head);
-    traverse(head);
-
     head = insertAtBeginning("Good Days by Sza", head);
-    traverse(head);
-
     head = insertAtBeginning("Crybaby by Sza", head);
     traverse(head);
 
-    head = insertAfter(after "Crybaby", "Para sa Akin by Arthur Nery", head");
+    cout << insertAfter("Jump by Tyla", "Para sa Akin by Arthur Nery", head);
+    cout << insertAfter("Para sa Akin by Arthur Nery", "Isa Lang by Arthur Nery", head);
+    cout << insertAfter("Isa Lang by Arthur Nery", "Tagpuan by Moira", head);
     traverse(head);
 
-    head = insertAfter("Isa Lang by Arthure Nery.compare(Para sa Akin by Arthur Nery)"Node*head);
+    cout << deleteAtEnd(head);
     traverse(head);
 
-    head = insertAfter("Tagpuan by Moira.compare(Isa Lang by Arthur Nery)"Node*head);
+    head = deleteFromBeginning(head);
     traverse(head);
 
-
-
+    head = deleteFromGivenNode("Good Days by Sza", head);
+    traverse(head);
 
     return 0;
  }
